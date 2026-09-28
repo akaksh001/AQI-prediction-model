@@ -1,0 +1,15 @@
+# Python / Environment
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.env
+
+# Large Raw Datasets & Intermediate Matrices (>30MB)
+data/raw/city_hour.csv
+data/processed/features.csv
+data/processed/train.csv
+
+# Keep processed test data, clean dataset, models, scripts, notebooks, and outputs
+!data/processed/clean_aqi.csv
+!data/processed/test.csv
+!data/processed/val.csv

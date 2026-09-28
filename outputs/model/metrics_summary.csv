@@ -1,0 +1,5 @@
+Model,Task,Val_RMSE,Val_MAE,Val_R2,Test_RMSE,Test_MAE,Test_R2,Test_Recall,Test_Precision,Test_F1,Test_F1_macro,Test_F1_weighted
+XGBoost,Regression,2.4921,1.6895,0.9995,2.2803,1.5819,0.9996,,,,,
+RandomForest,Regression,3.7972,2.4373,0.9989,3.4955,2.2753,0.9991,,,,,
+XGBoost_Hazard,Binary Classification (Severe),,,,,,,0.9968,0.9798,0.9882,,
+XGBoost_Category,Multiclass (AQI_ord 0-5),,,,,,,,,,0.9379222660123405,0.9851490510534604
