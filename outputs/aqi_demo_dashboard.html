@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html-root">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,21 +10,85 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <title>Delhi 25-Station Real GIS Map & Health Portal</title>
+
+  <style>
+    /* ── LIGHT THEME (default) ── */
+    :root, html.light {
+      --background:        #f8fafc;
+      --foreground:        #0f172a;
+      --card:              #ffffff;
+      --sidebar:           #f1f5f9;
+      --border:            #e2e8f0;
+      --muted-foreground:  #64748b;
+    }
+
+    /* ── DARK THEME ── */
+    html.dark {
+      --background:        #0f172a;
+      --foreground:        #f1f5f9;
+      --card:              #1e293b;
+      --sidebar:           #0f172a;
+      --border:            #334155;
+      --muted-foreground:  #94a3b8;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Theme toggle button */
+    #theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: var(--sidebar);
+      color: var(--foreground);
+      transition: all 0.25s ease;
+    }
+    #theme-toggle:hover {
+      background: var(--card);
+      box-shadow: 0 0 0 2px #3b82f640;
+    }
+
+    /* Sliders */
+    input[type=range]::-webkit-slider-thumb { background: #3b82f6; }
+    input[type=range] { accent-color: #3b82f6; }
+
+    /* Select dropdowns inherit theme */
+    select {
+      background: var(--sidebar);
+      color: var(--foreground);
+      border-color: var(--border);
+    }
+  </style>
 </head>
-<body class="bg-[var(--background)] text-[var(--foreground)] antialiased p-6 space-y-6">
+<body class="antialiased p-6 space-y-6">
 
   <!-- Header -->
-  <div class="bg-[var(--card)] border border-[var(--border)] rounded-xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
+  <div style="background:var(--card);border:1px solid var(--border)" class="rounded-xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
     <div>
       <div class="flex items-center gap-2">
         <span class="text-2xl">🗺️</span>
-        <h1 class="text-xl font-bold text-[var(--foreground)]">Delhi NCR 25-Station GIS Air Quality Map Portal</h1>
+        <h1 class="text-xl font-bold" style="color:var(--foreground)">Delhi NCR 25-Station GIS Air Quality Map Portal</h1>
       </div>
-      <p class="text-xs text-[var(--muted-foreground)] mt-0.5">DSN2098 · Group 65 · 25 Real Monitoring Stations Across All 11 Delhi Districts & NCR</p>
+      <p class="text-xs mt-0.5" style="color:var(--muted-foreground)">DSN2098 · Group 65 · 25 Real Monitoring Stations Across All 11 Delhi Districts & NCR</p>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 flex-wrap">
       <span class="px-3 py-1 bg-green-500/10 border border-green-500/30 text-green-600 rounded-full text-xs font-semibold">25 Stations Loaded</span>
       <span class="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-600 rounded-full text-xs font-semibold">XGBoost Engine</span>
+      <!-- THEME TOGGLE -->
+      <button id="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+        <span id="theme-label">Dark Mode</span>
+      </button>
     </div>
   </div>
 
@@ -484,7 +548,35 @@
       `;
     }
 
+    // ── THEME TOGGLE ──
+    function toggleTheme() {
+      const html = document.getElementById('html-root');
+      const isDark = html.classList.contains('dark');
+      if (isDark) {
+        html.classList.remove('dark');
+        html.classList.add('light');
+        document.getElementById('theme-icon').textContent = '🌙';
+        document.getElementById('theme-label').textContent = 'Dark Mode';
+        localStorage.setItem('aqi-theme', 'light');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+        document.getElementById('theme-icon').textContent = '☀️';
+        document.getElementById('theme-label').textContent = 'Light Mode';
+        localStorage.setItem('aqi-theme', 'dark');
+      }
+    }
+
     window.onload = function() {
+      // Restore saved theme preference
+      const saved = localStorage.getItem('aqi-theme') || 'light';
+      const html = document.getElementById('html-root');
+      html.classList.add(saved);
+      if (saved === 'dark') {
+        document.getElementById('theme-icon').textContent = '☀️';
+        document.getElementById('theme-label').textContent = 'Light Mode';
+      }
+
       initRealLeafletMap();
       renderStations();
       selectStation('anand_vihar');
