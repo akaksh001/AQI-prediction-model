@@ -4,7 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
-  <title>Delhi Regional AQI Map & Health Advisory Portal</title>
+
+  <!-- Leaflet GIS Real Map Library -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <title>Delhi Real GIS Map & Health Advisory Portal</title>
 </head>
 <body class="bg-slate-900 text-slate-100 antialiased p-6 space-y-6">
 
@@ -13,88 +18,36 @@
     <div>
       <div class="flex items-center gap-2">
         <span class="text-2xl">🗺️</span>
-        <h1 class="text-xl font-bold text-white">Delhi Regional AQI Interactive Map Portal</h1>
+        <h1 class="text-xl font-bold text-white">Delhi Real GIS Air Quality Map Portal</h1>
       </div>
-      <p class="text-xs text-slate-400 mt-0.5">DSN2098 · Group 65 · Color-Coded Regional Heat Map & Confirmed AI Predictions</p>
+      <p class="text-xs text-slate-400 mt-0.5">DSN2098 · Group 65 · Real OpenStreetMap GIS Canvas, Live Predictions & Health Guidance</p>
     </div>
     <div class="flex items-center gap-2">
-      <span class="px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full text-xs font-semibold">Active Color Map Engine</span>
-      <span class="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-full text-xs font-semibold">XGBoost Predictor</span>
+      <span class="px-3 py-1 bg-sky-500/10 border border-sky-500/30 text-sky-400 rounded-full text-xs font-semibold">Real OpenStreetMap GIS</span>
+      <span class="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-full text-xs font-semibold">XGBoost Engine</span>
     </div>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
     
-    <!-- Left Column: Dynamic Color-Coded Map & Station Selector -->
+    <!-- Left Column: Authentic OpenStreetMap GIS Canvas & Station Selector -->
     <div class="lg:col-span-6 space-y-4">
       
-      <!-- DYNAMIC COLOR-CODED DELHI MAP CANVAS -->
+      <!-- REAL OPENSTREETMAP GIS CANVAS -->
       <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 space-y-3">
         <div class="flex items-center justify-between">
           <h2 class="font-bold text-sm text-white flex items-center gap-2">
-            <span>🗺️</span> Delhi NCR Regional Heat Map
+            <span>🌍</span> Real Delhi Geographic GIS Map (OpenStreetMap)
           </h2>
-          <span class="text-[10px] text-slate-400">Click any region on map</span>
+          <span class="text-[10px] text-slate-400">Click any station pin on real map</span>
         </div>
 
-        <!-- Interactive SVG Map of Delhi NCR -->
-        <div class="relative w-full h-64 bg-slate-950 border border-slate-700 rounded-xl p-3 flex items-center justify-center overflow-hidden">
-          <svg viewBox="0 0 500 400" class="w-full h-full">
-            <!-- Background grid lines -->
-            <path d="M 0,100 L 500,100 M 0,200 L 500,200 M 0,300 L 500,300 M 100,0 L 100,400 M 200,0 L 200,400 M 300,0 L 300,400 M 400,0 L 400,400" stroke="#334155" stroke-opacity="0.3" stroke-width="1"/>
-
-            <!-- REGION 1: North Delhi (Jahangirpuri / Rohini) -->
-            <g onclick="selectStation('jahangirpuri')" class="cursor-pointer group">
-              <path id="map-path-jahangirpuri" d="M 120,40 L 260,40 L 250,140 L 110,120 Z" fill="#9333ea" fill-opacity="0.45" stroke="#a855f7" stroke-width="2" class="transition-all duration-300 group-hover:fill-opacity-70"/>
-              <text x="180" y="85" text-anchor="middle" fill="#ffffff" class="text-[11px] font-bold pointer-events-none">North Delhi</text>
-              <text id="map-val-jahangirpuri" x="180" y="102" text-anchor="middle" fill="#e9d5ff" class="text-[10px] font-semibold pointer-events-none">AQI 390</text>
-            </g>
-
-            <!-- REGION 2: Central Delhi (ITO / CP) -->
-            <g onclick="selectStation('ito')" class="cursor-pointer group">
-              <path id="map-path-ito" d="M 250,140 L 340,130 L 320,230 L 230,220 Z" fill="#e11d48" fill-opacity="0.45" stroke="#f43f5e" stroke-width="2" class="transition-all duration-300 group-hover:fill-opacity-70"/>
-              <text x="285" y="175" text-anchor="middle" fill="#ffffff" class="text-[11px] font-bold pointer-events-none">ITO / Central</text>
-              <text id="map-val-ito" x="285" y="192" text-anchor="middle" fill="#fecdd3" class="text-[10px] font-semibold pointer-events-none">AQI 320</text>
-            </g>
-
-            <!-- REGION 3: East Delhi (Anand Vihar) -->
-            <g onclick="selectStation('anand_vihar')" class="cursor-pointer group">
-              <path id="map-path-anand_vihar" d="M 340,130 L 460,110 L 450,220 L 320,230 Z" fill="#7e22ce" fill-opacity="0.55" stroke="#c084fc" stroke-width="2.5" class="transition-all duration-300 group-hover:fill-opacity-80"/>
-              <text x="390" y="170" text-anchor="middle" fill="#ffffff" class="text-[11px] font-bold pointer-events-none">Anand Vihar</text>
-              <text id="map-val-anand_vihar" x="390" y="187" text-anchor="middle" fill="#f3e8ff" class="text-[10px] font-semibold pointer-events-none">AQI 412</text>
-            </g>
-
-            <!-- REGION 4: West Delhi (Punjabi Bagh) -->
-            <g onclick="selectStation('punjabi_bagh')" class="cursor-pointer group">
-              <path id="map-path-punjabi_bagh" d="M 110,120 L 230,140 L 210,240 L 90,210 Z" fill="#ea580c" fill-opacity="0.45" stroke="#f97316" stroke-width="2" class="transition-all duration-300 group-hover:fill-opacity-70"/>
-              <text x="160" y="175" text-anchor="middle" fill="#ffffff" class="text-[11px] font-bold pointer-events-none">West Delhi</text>
-              <text id="map-val-punjabi_bagh" x="160" y="192" text-anchor="middle" fill="#ffedd5" class="text-[10px] font-semibold pointer-events-none">AQI 295</text>
-            </g>
-
-            <!-- REGION 5: South Delhi (R.K. Puram / Saket / Okhla) -->
-            <g onclick="selectStation('rk_puram')" class="cursor-pointer group">
-              <path id="map-path-rk_puram" d="M 210,240 L 330,230 L 310,360 L 170,350 Z" fill="#f59e0b" fill-opacity="0.45" stroke="#fbbf24" stroke-width="2" class="transition-all duration-300 group-hover:fill-opacity-70"/>
-              <text x="255" y="290" text-anchor="middle" fill="#ffffff" class="text-[11px] font-bold pointer-events-none">South Delhi</text>
-              <text id="map-val-rk_puram" x="255" y="307" text-anchor="middle" fill="#fef3c7" class="text-[10px] font-semibold pointer-events-none">AQI 260</text>
-            </g>
-
-            <!-- REGION 6: South-West (Dwarka) -->
-            <g onclick="selectStation('dwarka')" class="cursor-pointer group">
-              <path id="map-path-dwarka" d="M 70,210 L 210,240 L 170,350 L 50,320 Z" fill="#84cc16" fill-opacity="0.45" stroke="#a3e635" stroke-width="2" class="transition-all duration-300 group-hover:fill-opacity-70"/>
-              <text x="125" y="275" text-anchor="middle" fill="#ffffff" class="text-[11px] font-bold pointer-events-none">Dwarka</text>
-              <text id="map-val-dwarka" x="125" y="292" text-anchor="middle" fill="#ecfccb" class="text-[10px] font-semibold pointer-events-none">AQI 190</text>
-            </g>
-
-            <!-- REGION 7: Noida Boundary -->
-            <g onclick="selectStation('noida_sec62')" class="cursor-pointer group">
-              <path id="map-path-noida_sec62" d="M 450,220 L 490,210 L 480,350 L 330,340 Z" fill="#f59e0b" fill-opacity="0.45" stroke="#fbbf24" stroke-width="2" class="transition-all duration-300 group-hover:fill-opacity-70"/>
-              <text x="415" y="280" text-anchor="middle" fill="#ffffff" class="text-[10px] font-bold pointer-events-none">Noida</text>
-              <text id="map-val-noida_sec62" x="415" y="295" text-anchor="middle" fill="#fef3c7" class="text-[9px] font-semibold pointer-events-none">AQI 270</text>
-            </g>
-          </svg>
+        <!-- Real Leaflet Map Container -->
+        <div class="relative w-full h-80 rounded-xl overflow-hidden border border-slate-700 shadow-inner">
+          <div id="real-delhi-map" class="w-full h-full z-10"></div>
 
           <!-- Color Scale Bar -->
-          <div class="absolute bottom-2 left-3 right-3 bg-slate-900/90 backdrop-blur-md border border-slate-700 rounded-lg p-1.5 flex items-center justify-between text-[9px] font-bold">
+          <div class="absolute bottom-3 left-3 right-3 bg-slate-900/90 backdrop-blur-md border border-slate-700 rounded-lg p-2 flex items-center justify-between text-[9px] font-bold z-20 shadow-md">
             <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span> Good (0-50)</span>
             <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-lime-500 inline-block"></span> Sat. (51-100)</span>
             <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span> Mod. (101-200)</span>
@@ -107,7 +60,7 @@
 
       <!-- Station Selector Grid -->
       <div class="bg-slate-800 border border-slate-700 rounded-xl p-4 space-y-2">
-        <h2 class="font-bold text-xs uppercase tracking-wider text-slate-400">📍 Quick Station Selector Cards</h2>
+        <h2 class="font-bold text-xs uppercase tracking-wider text-slate-400">📍 Monitoring Station Cards</h2>
         <div class="grid grid-cols-2 gap-2 text-xs" id="station-grid">
           <!-- Dynamically Generated Cards -->
         </div>
@@ -243,19 +196,53 @@
 
   <script>
     const STATIONS = [
-      { id: "anand_vihar", name: "Anand Vihar", zone: "East Delhi Sector", pm25: 310, pm10: 450, no2: 120, lag1: 410, season: "winter" },
-      { id: "rk_puram", name: "R.K. Puram", zone: "South Delhi Sector", pm25: 180, pm10: 290, no2: 75, lag1: 260, season: "winter" },
-      { id: "ito", name: "ITO Crossing", zone: "Central Delhi Sector", pm25: 230, pm10: 340, no2: 110, lag1: 320, season: "winter" },
-      { id: "punjabi_bagh", name: "Punjabi Bagh", zone: "West Delhi Sector", pm25: 210, pm10: 310, no2: 85, lag1: 295, season: "winter" },
-      { id: "dwarka", name: "Dwarka Sector 8", zone: "South-West Sector", pm25: 140, pm10: 220, no2: 55, lag1: 190, season: "winter" },
-      { id: "rohini", name: "Rohini Sector 16", zone: "North-West Sector", pm25: 250, pm10: 380, no2: 90, lag1: 340, season: "winter" },
-      { id: "jahangirpuri", name: "Jahangirpuri", zone: "North Delhi Sector", pm25: 290, pm10: 430, no2: 105, lag1: 390, season: "winter" },
-      { id: "okhla", name: "Okhla Phase 2", zone: "South-East Sector", pm25: 220, pm10: 330, no2: 95, lag1: 310, season: "winter" },
-      { id: "noida_sec62", name: "Noida Sector 62", zone: "NCR East Boundary", pm25: 195, pm10: 300, no2: 70, lag1: 270, season: "winter" },
-      { id: "gurugram_sec51", name: "Gurugram Sec 51", zone: "NCR South Boundary", pm25: 165, pm10: 260, no2: 60, lag1: 230, season: "winter" }
+      { id: "anand_vihar", name: "Anand Vihar", zone: "East Delhi Sector", lat: 28.6469, lng: 77.3160, pm25: 310, pm10: 450, no2: 120, lag1: 410, season: "winter" },
+      { id: "rk_puram", name: "R.K. Puram", zone: "South Delhi Sector", lat: 28.5630, lng: 77.1860, pm25: 180, pm10: 290, no2: 75, lag1: 260, season: "winter" },
+      { id: "ito", name: "ITO Crossing", zone: "Central Delhi Sector", lat: 28.6286, lng: 77.2410, pm25: 230, pm10: 340, no2: 110, lag1: 320, season: "winter" },
+      { id: "punjabi_bagh", name: "Punjabi Bagh", zone: "West Delhi Sector", lat: 28.6683, lng: 77.1167, pm25: 210, pm10: 310, no2: 85, lag1: 295, season: "winter" },
+      { id: "dwarka", name: "Dwarka Sector 8", zone: "South-West Sector", lat: 28.5921, lng: 77.0460, pm25: 140, pm10: 220, no2: 55, lag1: 190, season: "winter" },
+      { id: "rohini", name: "Rohini Sector 16", zone: "North-West Sector", lat: 28.7325, lng: 77.1188, pm25: 250, pm10: 380, no2: 90, lag1: 340, season: "winter" },
+      { id: "jahangirpuri", name: "Jahangirpuri", zone: "North Delhi Sector", lat: 28.7320, lng: 77.1700, pm25: 290, pm10: 430, no2: 105, lag1: 390, season: "winter" },
+      { id: "okhla", name: "Okhla Phase 2", zone: "South-East Sector", lat: 28.5307, lng: 77.2713, pm25: 220, pm10: 330, no2: 95, lag1: 310, season: "winter" },
+      { id: "noida_sec62", name: "Noida Sector 62", zone: "NCR East Boundary", lat: 28.6245, lng: 77.3650, pm25: 195, pm10: 300, no2: 70, lag1: 270, season: "winter" },
+      { id: "gurugram_sec51", name: "Gurugram Sec 51", zone: "NCR South Boundary", lat: 28.4211, lng: 77.0815, pm25: 165, pm10: 260, no2: 60, lag1: 230, season: "winter" }
     ];
 
     let currentStation = STATIONS[0];
+    let leafletMap = null;
+    let mapMarkers = {};
+    let mapCircles = {};
+
+    function initRealLeafletMap() {
+      leafletMap = L.map('real-delhi-map', {
+        center: [28.6139, 77.2090],
+        zoom: 11,
+        zoomControl: true
+      });
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(leafletMap);
+
+      STATIONS.forEach(s => {
+        const circle = L.circle([s.lat, s.lng], {
+          color: '#7e22ce',
+          fillColor: '#7e22ce',
+          fillOpacity: 0.5,
+          radius: 1800
+        }).addTo(leafletMap);
+
+        const marker = L.marker([s.lat, s.lng]).addTo(leafletMap);
+        marker.bindPopup(`<b>${s.name}</b><br>${s.zone}<br><span id="popup-${s.id}">AQI Predictions Active</span>`);
+
+        circle.on('click', () => selectStation(s.id));
+        marker.on('click', () => selectStation(s.id));
+
+        mapMarkers[s.id] = marker;
+        mapCircles[s.id] = circle;
+      });
+    }
 
     function renderStations() {
       const grid = document.getElementById('station-grid');
@@ -282,6 +269,12 @@
       
       document.getElementById('selected-station-name').innerText = currentStation.name;
       updateSliderLabels();
+
+      if (leafletMap) {
+        leafletMap.panTo([currentStation.lat, currentStation.lng]);
+        if (mapMarkers[id]) mapMarkers[id].openPopup();
+      }
+
       confirmAndPredict();
       renderStations();
     }
@@ -338,27 +331,28 @@
 
       let cat = "Good";
       let catColor = "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
-      let mapFill = "#22c55e";
+      let mapColor = "#22c55e";
 
-      if (predAQI > 50)  { cat = "Satisfactory"; catColor = "bg-lime-500/20 text-lime-400 border border-lime-500/30"; mapFill = "#84cc16"; }
-      if (predAQI > 100) { cat = "Moderate";     catColor = "bg-amber-500/20 text-amber-400 border border-amber-500/30"; mapFill = "#f59e0b"; }
-      if (predAQI > 200) { cat = "Poor";         catColor = "bg-orange-500/20 text-orange-400 border border-orange-500/30"; mapFill = "#ea580c"; }
-      if (predAQI > 300) { cat = "Very Poor";    catColor = "bg-rose-500/20 text-rose-400 border border-rose-500/30"; mapFill = "#e11d48"; }
-      if (predAQI > 400) { cat = "Severe";       catColor = "bg-purple-500/20 text-purple-400 border border-purple-500/30"; mapFill = "#7e22ce"; }
+      if (predAQI > 50)  { cat = "Satisfactory"; catColor = "bg-lime-500/20 text-lime-400 border border-lime-500/30"; mapColor = "#84cc16"; }
+      if (predAQI > 100) { cat = "Moderate";     catColor = "bg-amber-500/20 text-amber-400 border border-amber-500/30"; mapColor = "#f59e0b"; }
+      if (predAQI > 200) { cat = "Poor";         catColor = "bg-orange-500/20 text-orange-400 border border-orange-500/30"; mapColor = "#ea580c"; }
+      if (predAQI > 300) { cat = "Very Poor";    catColor = "bg-rose-500/20 text-rose-400 border border-rose-500/30"; mapColor = "#e11d48"; }
+      if (predAQI > 400) { cat = "Severe";       catColor = "bg-purple-500/20 text-purple-400 border border-purple-500/30"; mapColor = "#7e22ce"; }
 
       document.getElementById('res-aqi').innerText = predAQI;
       document.getElementById('res-badge').innerText = cat;
       document.getElementById('res-badge').className = `px-3.5 py-1 rounded-full text-xs font-bold ${catColor}`;
 
-      // DYNAMICALLY UPDATE THE SVG MAP REGION COLOR AND AQI VALUE
-      const mapPath = document.getElementById(`map-path-${currentStation.id}`);
-      const mapVal = document.getElementById(`map-val-${currentStation.id}`);
-      if (mapPath) {
-        mapPath.setAttribute('fill', mapFill);
-        mapPath.setAttribute('stroke', mapFill);
+      if (mapCircles[currentStation.id]) {
+        mapCircles[currentStation.id].setStyle({
+          color: mapColor,
+          fillColor: mapColor,
+          fillOpacity: 0.6
+        });
       }
-      if (mapVal) {
-        mapVal.textContent = `AQI ${predAQI}`;
+      const popupEl = document.getElementById(`popup-${currentStation.id}`);
+      if (popupEl) {
+        popupEl.innerHTML = `<b>Predicted AQI: ${predAQI}</b> (${cat})`;
       }
 
       const alertBanner = document.getElementById('alert-banner');
@@ -471,8 +465,11 @@
       `;
     }
 
-    renderStations();
-    selectStation('anand_vihar');
+    window.onload = function() {
+      initRealLeafletMap();
+      renderStations();
+      selectStation('anand_vihar');
+    };
   </script>
 </body>
 </html>
