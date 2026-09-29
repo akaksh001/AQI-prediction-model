@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
-  <title>Delhi Regional AQI Map & Climate Stress-Testing Portal</title>
+  <title>Delhi Regional AQI Map & Health Advisory Portal</title>
 </head>
 <body class="bg-slate-900 text-slate-100 antialiased p-6 space-y-6">
 
@@ -12,18 +12,17 @@
   <div class="bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
     <div>
       <div class="flex items-center gap-2">
-        <span class="text-2xl">🧪</span>
-        <h1 class="text-xl font-bold text-white">Delhi Regional AQI & Climate Stress-Testing Portal</h1>
+        <span class="text-2xl">🗺️</span>
+        <h1 class="text-xl font-bold text-white">Delhi Regional AQI & Health Advisory Portal</h1>
       </div>
-      <p class="text-xs text-slate-400 mt-0.5">DSN2098 · Group 65 · Interactive Region Selector, Confirmed AI Predictions & GenAI Stress-Testing</p>
+      <p class="text-xs text-slate-400 mt-0.5">DSN2098 · Group 65 · Interactive Region Selector & Confirmed AI Predictions</p>
     </div>
     <div class="flex items-center gap-2">
-      <span class="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-full text-xs font-semibold">GenAI Stress-Tester Active</span>
-      <span class="px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full text-xs font-semibold">XGBoost Engine</span>
+      <span class="px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 rounded-full text-xs font-semibold">Active Stations: 10 Delhi Zones</span>
+      <span class="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-full text-xs font-semibold">XGBoost Engine</span>
     </div>
   </div>
 
-  <!-- SECTION 1: REGIONAL MAP & PREDICTOR -->
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
     
     <!-- Left Column: Interactive Map & Station Selector -->
@@ -166,94 +165,6 @@
 
     </div>
 
-  </div>
-
-  <!-- SECTION 2: GENAI SYNTHETIC CLIMATE STRESS-TESTING GENERATOR -->
-  <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 space-y-5">
-    <div class="flex items-center justify-between flex-wrap gap-3 border-b border-slate-700 pb-4">
-      <div>
-        <div class="flex items-center gap-2">
-          <span class="text-2xl">🧪</span>
-          <h2 class="font-bold text-lg text-white">Synthetic Climate Stress-Testing Generator (GenAI Feature)</h2>
-        </div>
-        <p class="text-xs text-slate-400 mt-1">Simulates extreme hypothetical climate & anthropogenic perturbations to stress-test city emergency response systems.</p>
-      </div>
-      <span class="px-3 py-1 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-full text-xs font-bold">XGBoost + Synthetic Perturbation Engine</span>
-    </div>
-
-    <!-- Scenario Buttons -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-      <button onclick="runStressScenario('stubble')" id="btn-stubble" class="p-3 border rounded-xl text-left space-y-1 transition-all bg-purple-500/10 border-purple-500/30 text-purple-300 font-bold">
-        <div class="flex items-center justify-between">
-          <span>🔥 Stubble Surge</span>
-          <span class="text-xs font-bold text-purple-400">+40% PM2.5</span>
-        </div>
-        <p class="text-[10px] font-normal text-slate-400">Crop stubble smoke + -5°C winter temperature drop</p>
-      </button>
-
-      <button onclick="runStressScenario('diwali')" id="btn-diwali" class="p-3 border rounded-xl text-left space-y-1 transition-all bg-slate-900 border-slate-700 text-slate-300">
-        <div class="flex items-center justify-between">
-          <span>🚗 Diwali Pyrotechnic</span>
-          <span class="text-xs font-bold text-rose-400">+60% PM2.5/PM10</span>
-        </div>
-        <p class="text-[10px] font-normal text-slate-400">Firecracker surge + peak festival vehicle traffic</p>
-      </button>
-
-      <button onclick="runStressScenario('dust')" id="btn-dust" class="p-3 border rounded-xl text-left space-y-1 transition-all bg-slate-900 border-slate-700 text-slate-300">
-        <div class="flex items-center justify-between">
-          <span>🌪️ Summer Dust Storm</span>
-          <span class="text-xs font-bold text-amber-400">+100% PM10</span>
-        </div>
-        <p class="text-[10px] font-normal text-slate-400">Coarse dust intrusion from Thar desert wind</p>
-      </button>
-
-      <button onclick="runStressScenario('monsoon')" id="btn-monsoon" class="p-3 border rounded-xl text-left space-y-1 transition-all bg-slate-900 border-slate-700 text-slate-300">
-        <div class="flex items-center justify-between">
-          <span>🌧️ Monsoon Rain</span>
-          <span class="text-xs font-bold text-emerald-400">-50% Washout</span>
-        </div>
-        <p class="text-[10px] font-normal text-slate-400">Heavy rain cloudburst atmospheric cleaning</p>
-      </button>
-    </div>
-
-    <!-- Stress Test Results Card -->
-    <div class="p-5 bg-slate-900 border border-slate-700 rounded-xl space-y-4 text-xs">
-      <div class="flex justify-between items-start flex-wrap gap-2 border-b border-slate-700 pb-3">
-        <div>
-          <span class="text-[10px] uppercase font-bold text-slate-400 block">Simulated Scenario Impact</span>
-          <span id="st-scenario-title" class="font-bold text-base text-purple-400">🔥 Stubble Burning Surge (+40% Crop Smoke + Cold Inversion)</span>
-        </div>
-        <div class="text-right">
-          <span class="text-[10px] uppercase font-bold text-slate-400 block">AQI Delta Shift</span>
-          <span id="st-delta" class="font-black text-lg text-purple-400">+115.4 AQI Points</span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-        <div class="p-3 bg-slate-800 border border-slate-700 rounded-lg">
-          <span class="text-slate-400 block">Baseline City AQI</span>
-          <span id="st-base-aqi" class="text-2xl font-bold text-slate-200 mt-1">268.5</span>
-        </div>
-        <div class="p-3 bg-slate-800 border border-slate-700 rounded-lg">
-          <span class="text-slate-400 block">Stress-Tested AQI</span>
-          <span id="st-test-aqi" class="text-2xl font-bold text-purple-400 mt-1">383.9</span>
-        </div>
-        <div class="p-3 bg-slate-800 border border-slate-700 rounded-lg">
-          <span class="text-slate-400 block">Emergency Hazard Probability</span>
-          <span id="st-prob" class="text-2xl font-bold text-rose-400 mt-1">98.4%</span>
-        </div>
-      </div>
-
-      <!-- Preparedness Guidance -->
-      <div class="p-3.5 bg-slate-800 border border-slate-700 rounded-lg space-y-1">
-        <span class="font-bold text-xs text-slate-200 flex items-center gap-1.5">
-          <span>🏛️</span> Municipal Preparedness & Response Directives
-        </span>
-        <p id="st-guidance" class="text-slate-400 leading-relaxed">
-          Emergency GRAP Phase IV activation triggered. Enforce immediate ban on heavy diesel trucks entering Delhi NCR. Deploy anti-smog guns across industrial corridors and shut down non-essential construction sites.
-        </p>
-      </div>
-    </div>
   </div>
 
   <script>
@@ -469,56 +380,6 @@
           </div>
         </div>
       `;
-    }
-
-    // STRESS TEST GENERATOR LOGIC
-    function runStressScenario(type) {
-      const buttons = ['stubble', 'diwali', 'dust', 'monsoon'];
-      buttons.forEach(b => {
-        const btn = document.getElementById(`btn-${b}`);
-        if (b === type) {
-          btn.className = "p-3 border rounded-xl text-left space-y-1 transition-all bg-purple-500/10 border-purple-500/30 text-purple-300 font-bold";
-        } else {
-          btn.className = "p-3 border rounded-xl text-left space-y-1 transition-all bg-slate-900 border-slate-700 text-slate-300";
-        }
-      });
-
-      const title = document.getElementById('st-scenario-title');
-      const delta = document.getElementById('st-delta');
-      const baseAqi = document.getElementById('st-base-aqi');
-      const testAqi = document.getElementById('st-test-aqi');
-      const prob = document.getElementById('st-prob');
-      const guidance = document.getElementById('st-guidance');
-
-      if (type === 'stubble') {
-        title.innerText = "🔥 Stubble Burning Surge (+40% Crop Smoke + Cold Inversion)";
-        delta.innerText = "+115.4 AQI Points";
-        baseAqi.innerText = "268.5";
-        testAqi.innerText = "383.9";
-        prob.innerText = "98.4%";
-        guidance.innerText = "Emergency GRAP Phase IV activation triggered. Enforce immediate ban on heavy diesel trucks entering Delhi NCR. Deploy anti-smog guns across industrial corridors and shut down non-essential construction sites.";
-      } else if (type === 'diwali') {
-        title.innerText = "🚗 Diwali Pyrotechnic & Traffic Festival Surge";
-        delta.innerText = "+142.1 AQI Points";
-        baseAqi.innerText = "268.5";
-        testAqi.innerText = "410.6";
-        prob.innerText = "99.2%";
-        guidance.innerText = "Severe Emergency Alert. Mandatory GRAP IV restrictions. Restrict private vehicular movement (Odd-Even scheme), ban firecracker sales, and issue public stay-at-home health advisories.";
-      } else if (type === 'dust') {
-        title.innerText = "🌪️ Summer Thar Desert Dust Storm Event";
-        delta.innerText = "+78.2 AQI Points";
-        baseAqi.innerText = "185.0";
-        testAqi.innerText = "263.2";
-        prob.innerText = "64.5%";
-        guidance.innerText = "Coarse dust PM10 intrusion detected. Deploy mechanical road sweepers and continuous water mist spraying across major traffic arteries.";
-      } else if (type === 'monsoon') {
-        title.innerText = "🌧️ Heavy Monsoon Cloudburst Atmospheric Cleaning";
-        delta.innerText = "-124.6 AQI Points";
-        baseAqi.innerText = "215.0";
-        testAqi.innerText = "90.4";
-        prob.innerText = "2.1%";
-        guidance.innerText = "Atmospheric rain washout successfully cleared particulate matter. AQI dropped to Satisfactory level. Minimal public health risk.";
-      }
     }
 
     renderStations();

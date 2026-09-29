@@ -1,5 +1,0 @@
-Scenario,Description,Baseline_AQI,StressTested_AQI,AQI_Delta_Shift,Hazard_Spike_Hours,Hazard_Probability
-Scenario A: Stubble Burning + Cold Inversion,"+40% Crop Smoke (PM2.5), Cold Temperature Drop",215.64,244.38,28.74,1401,17.75
-Scenario B: Diwali Pyrotechnic & Traffic Spike,+60% Extreme PM2.5/PM10 Firecracker Surge,215.64,255.92,40.28,1631,20.41
-Scenario C: Summer Dust Storm Event,+100% Coarse Dust (PM10) Intrusion,215.64,236.57,20.93,1242,15.79
-Scenario D: Heavy Monsoon Cloudburst,-50% Atmospheric Rain Washout Cleaning,215.64,173.63,-42.01,460,4.27
