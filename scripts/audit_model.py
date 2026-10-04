@@ -56,7 +56,7 @@ def main():
     print("\n[1] REGRESSION MODEL AUDIT (AQI Continuous Value)")
     print(f"    • Root Mean Sq Error (RMSE) : {rmse:.4f} AQI units")
     print(f"    • Mean Absolute Error (MAE)  : {mae:.4f} AQI units")
-    print(f"    • R² Variance Score         : {r2:.6f} (99.96% variance explained)")
+    print(f"    • R² Variance Score         : {r2*100:.2f}% variance explained")
 
     # 2. Hazard Classifier Audit
     prob_hazard = clf_h.predict_proba(X_test)[:, 1]
