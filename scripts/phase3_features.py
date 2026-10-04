@@ -147,10 +147,8 @@ def main():
     df["AQI_resid"]    = stl_aqi.resid
     print(f"  {'AQI':<12} -> AQI_trend, AQI_seasonal, AQI_resid  added")
 
-    stl_features = (
-        [f"{c}_{t}" for c in STL_COLS for t in ["trend","seasonal","resid"]] +
-        ["AQI_trend", "AQI_seasonal", "AQI_resid"]
-    )
+    stl_features = []
+    
     print(f"\n  STL features added: {len(stl_features)}")
 
     # ── B. Lag Features ───────────────────────
@@ -198,8 +196,8 @@ def main():
         for w in ROLL_WINDOWS:
             mean_col = f"{col}_roll{w}h_mean"
             std_col  = f"{col}_roll{w}h_std"
-            df[mean_col] = df[col].rolling(window=w, min_periods=1).mean()
-            df[std_col]  = df[col].rolling(window=w, min_periods=1).std().fillna(0)
+            df[mean_col] = df[col].shift(1).rolling(window=w, min_periods=1).mean()
+            df[std_col]  = df[col].shift(1).rolling(window=w, min_periods=1).std().fillna(0)
             roll_features += [mean_col, std_col]
             print(f"  Added: {mean_col}, {std_col}")
 
