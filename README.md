@@ -192,7 +192,7 @@ SHAP (`TreeExplainer`) is used to understand which feature groups contribute mos
 
 For the **24-hour weather-enabled forecast model**:
 
-| Feature Group | Mean |SHAP| Share |
+| Feature Group | SHAP Share |
 |---|---:|
 | **AQI History** | **41.5%** |
 | **Pollutants** | **24.5%** |
