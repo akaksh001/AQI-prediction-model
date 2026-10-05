@@ -2,162 +2,262 @@
 
 ### DSN2098 · Group 65 · Final Project Repository
 
-**Team Members:**
+---
 
-- **Aryavardhan** — Phase 1: Data Collection & MICE Imputation
-- **Yugank Shakya** — Phase 2: Exploratory Data Analysis (EDA)
-- **Akaksh Samdani** — Phase 3: Feature Engineering (lags, rolling stats, cyclical encoding; STL for EDA)
-- **Anshu Sharma** — Phase 4: XGBoost Modeling & Benchmarking
-- **Amrit Raj** — Phase 5: SHAP Interpretability & Backtesting
-- **Priyam Kumar** — Phase 6: Interactive Dashboard & Documentation
+## 👥 Team Members
+
+| Team Member | Contribution |
+|---|---|
+| **Aryavardhan** | Phase 1: Data Collection & MICE Imputation |
+| **Yugank Shakya** | Phase 2: Exploratory Data Analysis (EDA) |
+| **Akaksh Samdani** | Phase 3: Feature Engineering, Forecast Features & STL-based EDA |
+| **Anshu Sharma** | Phase 4: XGBoost Modeling & Benchmarking |
+| **Amrit Raj** | Phase 5: SHAP Interpretability & Backtesting |
 
 ---
 
-## 📌 Project Overview
+# 📌 Project Overview
 
-Standard AQI monitoring reports a number but not a reason. This project delivers an **end-to-end Explainable AI Air Quality Analytics System** built on about 5.5 years of hourly CPCB data (Jan 2015 – Jul 2020, 48,192 hourly records) for Delhi.
+This project is an **end-to-end Explainable AI Air Quality Analytics System** developed using approximately **5.5 years of hourly CPCB air-quality data for Delhi**, covering January 2015 to June/July 2020 with **48,192 hourly records**.
 
-The system estimates the AQI of the current hour from pollutant readings and recent AQI history, flags severe-pollution hours, classifies the CPCB category, and explains each prediction with SHAP.
+The system supports two complementary tasks:
 
-> **Scope note:** the task is **AQI estimation (nowcasting)**, not multi-hour forecasting. Same-hour pollutant readings are model inputs, and AQI is calculated from them. The dataset contains **no meteorological variables** (temperature, wind, humidity), so weather effects were not modelled.
+### 1. AQI Nowcasting
+Estimates the AQI of the current hour using pollutant measurements and recent AQI history.
 
----
+### 2. Short-Term AQI Forecasting
+Predicts future AQI at:
 
-## 🚀 Key Features & Capabilities
+- **1 hour ahead**
+- **6 hours ahead**
+- **24 hours ahead**
 
-1. **Continuous AQI Estimation (`XGBoost Regressor`)**
-   - Estimates the AQI value for each hour.
-   - **Test RMSE:** `2.95 AQI units` | **Test MAE:** `2.11` | **Test R²:** `0.9994`
-   - Beats the "copy the previous hour" baseline (RMSE 3.65) by about 19%.
+The forecasting module additionally incorporates meteorological variables such as temperature, humidity, pressure, precipitation and wind.
 
-2. **Severe Hazard Detection (`XGBoost Hazard Classifier`)**
-   - Recall-optimized classifier (`scale_pos_weight = 6.58`, threshold = `0.40`).
-   - **Severe recall:** `99.84%` (630 of 631 severe hours in the test data) | **Precision:** `97.98%` | **F1:** `0.9890`
+The project also provides:
 
-3. **6-Class AQI Category Classification (`XGBoost Multiclass Head`)**
-   - CPCB categories: *Good, Satisfactory, Moderate, Poor, Very Poor, Severe*.
-   - **Accuracy:** `98%` | **Weighted F1:** `0.9819` | **Macro F1:** `0.9146`
-   - The *Good* class has only 9 test samples, so its metrics are unreliable and pull the macro F1 down.
+- Severe pollution hazard detection
+- Six-class CPCB AQI category classification
+- SHAP-based model interpretability
+- Rolling-origin backtesting
+- Interactive Delhi/NCR map and health advisory dashboard
 
-4. **SHAP Feature Attribution (`shap.TreeExplainer`)**
-   - Shows which features drive each prediction.
-   - Share of total |SHAP|: AQI history `88.8%` · pollutant readings `10.8%` · time/calendar features `0.4%`.
-
-5. **Interactive Delhi Map & Health Advisory Portal**
-   - `outputs/aqi_demo_dashboard.html`: select Delhi/NCR stations, adjust sensor values, view colour-coded AQI and health advisories.
-   - **Note:** the dashboard uses a simplified estimator for illustration. It is not connected to the trained models in `/models`.
+> **Scope note:** The interactive HTML dashboard currently demonstrates the AQI nowcasting workflow using a simplified estimator. The trained forecasting models are evaluated separately through the Python forecasting pipeline.
 
 ---
 
-## 📊 Evaluation Summary
+# 🚀 Key Features & Capabilities
+
+## 1. 📊 Continuous AQI Estimation — Nowcasting
+
+An **XGBoost Regressor** estimates the AQI for the current hour.
+
+### Performance
+
+- **Test RMSE:** `2.95 AQI units`
+- **Test MAE:** `2.11`
+- **Test R²:** `0.9994`
+
+The model improves upon the persistence baseline:
+
+> "Assume the current AQI remains the same as the previous hour."
+
+| Model | RMSE |
+|---|---:|
+| Persistence Baseline | 3.65 |
+| **XGBoost** | **2.95** |
+
+This represents approximately **19% improvement** over the persistence baseline.
+
+---
+
+# 2. 🚨 Severe Pollution Hazard Detection
+
+An **XGBoost binary classifier** identifies whether an observation belongs to the **Severe** AQI category.
+
+The classifier uses a recall-oriented configuration:
+
+- `scale_pos_weight = 6.58`
+- Classification threshold = `0.40`
+
+### Performance
+
+- **Recall:** `99.84%`
+- **Precision:** `97.98%`
+- **F1:** `0.9890`
+
+The model detected **630 of 631 severe hours** in the test data.
+
+---
+
+# 3. 🏷️ Six-Class CPCB AQI Classification
+
+An XGBoost multiclass model classifies AQI into six CPCB categories:
+
+1. Good
+2. Satisfactory
+3. Moderate
+4. Poor
+5. Very Poor
+6. Severe
+
+### Performance
+
+- **Accuracy:** `98%`
+- **Weighted F1:** `0.9819`
+- **Macro F1:** `0.9146`
+
+The **Good** class contains only 9 test samples, making its class-specific metrics less reliable and lowering the macro F1 score.
+
+---
+
+# 4. 🔮 Short-Term AQI Forecasting
+
+A separate forecasting pipeline predicts AQI at three future horizons:
+
+- **1 hour ahead**
+- **6 hours ahead**
+- **24 hours ahead**
+
+The forecasting model uses **72 weather-enabled features**, consisting of:
+
+- AQI history and lag features
+- AQI rolling statistics
+- Pollutant measurements
+- Weather variables
+- Cyclical time features
+- Calendar indicators
+
+The forecasting model is compared against a **persistence baseline**, where future AQI is assumed to remain equal to the current AQI.
+
+---
+
+## 📈 Forecasting Performance
+
+| Horizon | Persistence RMSE | XGBoost + Weather RMSE | Improvement | R² |
+|---|---:|---:|---:|---:|
+| **1 hour** | 3.65 | **2.84** | **22.32%** | **0.9994** |
+| **6 hours** | 18.43 | **15.34** | **16.78%** | **0.9831** |
+| **24 hours** | 49.83 | **48.73** | **2.21%** | **0.8294** |
+
+### Interpretation
+
+The forecasting results show that:
+
+- The **1-hour forecast** provides the strongest improvement over persistence.
+- The **6-hour forecast** also provides a substantial improvement.
+- The **24-hour forecast** is considerably more difficult and provides only a modest improvement over the persistence baseline.
+
+This is expected because AQI becomes harder to predict as the forecast horizon increases due to changing meteorological conditions, pollution emissions and atmospheric dynamics.
+
+> **Key observation:** Persistence is already a strong baseline for short-term AQI prediction because AQI is highly correlated with its recent values.
+
+---
+
+# 5. 🌦️ Weather Ablation Study
+
+To evaluate the contribution of meteorological information, each forecasting horizon was trained with and without weather features.
+
+| Horizon | XGBoost Without Weather | XGBoost + Weather | Weather Improvement |
+|---|---:|---:|---:|
+| **1 hour** | 2.99 | **2.84** | **5.05%** |
+| **6 hours** | 15.94 | **15.34** | **3.77%** |
+| **24 hours** | 49.51 | **48.73** | **1.58%** |
+
+Weather features improved forecasting performance at **all three horizons**.
+
+The benefit is strongest at the 1-hour horizon and becomes smaller for the 24-hour forecast.
+
+---
+
+# 6. 🚨 Forecast Hazard Detection
+
+The forecasting pipeline also predicts whether the future AQI will reach the **Severe** category.
+
+### Weather-enabled XGBoost classifier
+
+| Horizon | Recall | Precision | F1 |
+|---|---:|---:|---:|
+| **1 hour** | **99.84%** | 98.90% | **0.9937** |
+| **6 hours** | **95.72%** | 93.21% | **0.9445** |
+| **24 hours** | **78.29%** | 67.49% | **0.7249** |
+
+The results show that severe-event detection also becomes more difficult as the forecast horizon increases.
+
+---
+
+# 7. 🔍 SHAP Explainability
+
+SHAP (`TreeExplainer`) is used to understand which feature groups contribute most strongly to the forecasting model.
+
+For the **24-hour weather-enabled forecast model**:
+
+| Feature Group | Mean |SHAP| Share |
+|---|---:|
+| **AQI History** | **41.5%** |
+| **Pollutants** | **24.5%** |
+| **Weather** | **21.7%** |
+| **Time** | **12.4%** |
+
+### Interpretation
+
+The model relies most heavily on recent AQI history, followed by pollutant measurements and meteorological information.
+
+This demonstrates that future AQI depends on a combination of:
+
+- Existing pollution levels
+- Recent pollution trends
+- Pollutant concentrations
+- Weather conditions
+- Temporal patterns
+
+---
+
+# 8. 🔄 Rolling-Origin Forecast Backtesting
+
+A three-fold expanding-window backtest was performed for the **24-hour forecasting task**.
+
+| Fold | Test Period | Persistence RMSE | No Weather RMSE | Weather RMSE |
+|---|---|---:|---:|---:|
+| **1** | 2018-01-08 → 2018-11-04 | 52.34 | 58.59 | 53.53 |
+| **2** | 2018-11-04 → 2019-09-03 | 61.01 | 53.92 | **51.59** |
+| **3** | 2019-09-03 → 2020-06-29 | 49.84 | 52.82 | **46.13** |
+
+The rolling-origin evaluation demonstrates that forecasting performance varies across historical periods.
+
+The weather-enabled model outperforms persistence in **Fold 2 and Fold 3**, while performance in Fold 1 is slightly worse than the persistence baseline.
+
+This provides a more realistic assessment of model robustness across time.
+
+---
+
+# 📊 Overall Evaluation Summary
+
+## Nowcasting
 
 | Model | Task | Test Metric | Performance |
-| ----- | ---- | ----------- | ----------- |
-| Persistence baseline (copy previous hour) | AQI value | RMSE / R² | 3.65 / 0.9990 |
+|---|---|---|---|
+| Persistence Baseline | AQI value | RMSE / R² | 3.65 / 0.9990 |
 | **XGBoost Regressor** | AQI value | RMSE / MAE / R² | **2.95 / 2.11 / 0.9994** |
-| RandomForest (benchmark) | AQI value | RMSE / R² | 5.15 / 0.9981 |
-| **XGBoost Hazard Classifier** | Severe hour (binary) | Recall / Precision / F1 | **99.84% / 97.98% / 0.9890** |
+| RandomForest | AQI value | RMSE / R² | 5.15 / 0.9981 |
+| **XGBoost Hazard Classifier** | Severe hour | Recall / Precision / F1 | **99.84% / 97.98% / 0.9890** |
 | **XGBoost Category Head** | 6 CPCB categories | Weighted F1 / Macro F1 | **0.9819 / 0.9146** |
 
-**Rolling-origin backtest (expanding window, 3 folds):**
+## Forecasting
 
-| Fold | Test period | RMSE | R² |
-| ---- | ----------- | ---- | -- |
-| 1 | 2018-01 → 2018-11 | 5.00 | 0.9975 |
-| 2 | 2018-11 → 2019-09 | 3.38 | 0.9991 |
-| 3 | 2019-09 → 2020-06 | 3.67 | 0.9990 |
-
-**Top features (XGBoost importance):** `AQI_lag1` (57%), `AQI_lag3` (22%), `AQI_roll6h_mean` (18%).
-
-**Why R² is so high:** AQI changes slowly from hour to hour, so even the simple baseline reaches R² = 0.999. RMSE against the baseline is the more informative comparison.
+| Horizon | Persistence RMSE | XGBoost Weather RMSE | Improvement |
+|---|---:|---:|---:|
+| **1h** | 3.65 | **2.84** | **22.32%** |
+| **6h** | 18.43 | **15.34** | **16.78%** |
+| **24h** | 49.83 | **48.73** | **2.21%** |
 
 ---
 
-## 🔒 Data Leakage Prevention
+# 🧠 Why Is R² So High?
 
-- **Time-ordered split** (70% / 15% / 15%), no shuffling: train 2015-01 → 2018-11, validation 2018-11 → 2019-09, test 2019-09 → 2020-07.
-- **Rolling-window features use `shift(1)`**, so they only see past hours, never the current one.
-- **STL components are not model inputs.** Trend + seasonal + residual sums exactly to the target; STL is used for exploratory plots only (`outputs/eda/08_stl_decomposition.png`).
-- Lag features are shifted into the past. Target columns (`AQI`, `AQI_ord`, `hazard`, `AQI_Bucket`) are excluded from the feature list.
+The AQI time series is highly persistent, meaning that AQI usually does not change drastically between consecutive hours.
 
----
+Consequently, even the simple persistence baseline achieves:
 
-## ⚠️ Limitations & Future Work
-
-- The task is nowcasting: same-hour pollutant readings are inputs, and AQI is computed from them.
-- The model depends heavily on recent AQI (`AQI_lag1`, `AQI_lag3`, `AQI_roll6h_mean`).
-- No meteorological data, so weather effects were not tested.
-- The *Good* category is very rare (9 test samples), so its metrics are unstable.
-- The test period includes the 2020 lockdown (Severe rate 8.7% vs 13.2% in training), so the test set differs from the training distribution.
-- Missing-value imputation (MICE) and outlier clipping were fitted on the full dataset before splitting.
-- The dashboard is a demo estimator, not connected to the trained models.
-- **Future work:** add weather data, forecast 24–72 hours ahead, serve the models through an API, extend to other cities.
-
----
-
-## 📂 Repository Structure
-
-```
-AQI-prediction-model/
-├── data/
-│   ├── raw/               ← Drop raw CPCB city_hour.csv here
-│   └── processed/         ← clean_aqi.csv, train/val/test splits
-├── models/
-│   ├── xgb_reg.pkl        ← Trained XGBoost Regressor
-│   ├── xgb_clf_hazard.pkl ← Hazard classifier (model, threshold)
-│   └── xgb_clf_cat.pkl    ← 6-class category classifier
-├── notebooks/
-│   └── aqi_analytics_dashboard.ipynb
-├── outputs/
-│   ├── aqi_demo_dashboard.html   ← Interactive Delhi map & health portal (demo)
-│   ├── eda/                      ← EDA & STL plots
-│   └── model/                    ← Confusion matrix, SHAP & backtest plots
-├── scripts/
-│   ├── phase1_clean.py    ← MICE imputation & IQR outlier clipping
-│   ├── phase2_eda.py      ← Exploratory data analysis
-│   ├── phase3_features.py ← Lag, rolling, cyclical features; time-ordered split
-│   ├── phase4_model.py    ← XGBoost training & benchmarking
-│   ├── phase5_shap_eval.py← SHAP attribution & rolling-origin backtest
-│   └── audit_model.py     ← Terminal accuracy audit
-└── requirements.txt
-```
-
-**Features used by the models: 54** = 12 raw pollutants + 7 lag features + 24 rolling statistics + 8 cyclical (sin/cos) + 3 calendar flags.
-
----
-
-## 🛠️ Quick Start & Setup
-
-### 1. Installation
-
-```
-git clone https://github.com/akaksh001/AQI-prediction-model.git
-cd AQI-prediction-model
-pip install -r requirements.txt
-```
-
-### 2. Verify Trained Models in Terminal
-
-```
-python scripts/audit_model.py
-```
-
-> `audit_model.py` currently contains `os.chdir("D:/projectexhibit-aiml")`. Edit that path to your local project folder, or remove the line and run the script from the repository root.
-
-### 3. Launch the Demo Portal
-
-Open `outputs/aqi_demo_dashboard.html` in any web browser.
-
-### 4. Reproduce the Full Pipeline (Phases 1–5)
-
-```
-python scripts/phase1_clean.py
-python scripts/phase2_eda.py
-python scripts/phase3_features.py
-python scripts/phase4_model.py
-python scripts/phase5_shap_eval.py
-<<<<<<< HEAD
-```
-=======
-```
->>>>>>> 05c6befc4213c67b92cd1301e9dc0ccfa7719fc9
+```text
+R² = 0.9990
